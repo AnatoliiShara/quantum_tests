@@ -1,6 +1,8 @@
 import numpy as np
 import tensorflow as tf
-from sklearn.datasets import load_digits
+from sklearn.datasets import fetch_openml
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
 import random
 
 class DigitClassificationInterface:
@@ -38,13 +40,21 @@ class ConvolutionalNeuralNetwork(DigitClassificationInterface):
 class RandomForestModel(DigitClassificationInterface):
     def __init__(self):
         # Load and initialize your Random Forest model here using sklearn
-        mnist = load_digits()
-        self.model = mnist
+        mnist = fetch_openml('mnist_784', version=1)
+        X = mnist.data.astype('float32')
+        y = mnist.target.astype('int')
+
+        # Split the data into training and testing sets
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+        # Initialize and train a Random Forest classifier
+        self.model = RandomForestClassifier(n_estimators=100, random_state=42)
+        self.model.fit(X_train, y_train)
 
     def predict(self, image):
-        # Flatten the image to a 1D array (784 pixels)
-        image = image.reshape(1, -1)
-        # Make predictions using the Random Forest model
+        # Flatten the input image to match the MNIST format (784 pixels)
+        image = image.reshape(1, -1).astype('float32')
+        # Make predictions using the trained Random Forest model
         prediction = self.model.predict(image)
         return prediction[0]
 
