@@ -14,8 +14,8 @@ class DigitClassificationInterface:
 
 class ConvolutionalNeuralNetwork(DigitClassificationInterface):
     def __init__(self):
-        # Load and initialize your CNN model here using TensorFlow/Keras
-        # Define your model architecture
+        # Load and initialize CNN model using TensorFlow
+        # Define model architecture
         self.model = self.build_model()
         
     def build_model(self):
@@ -39,7 +39,7 @@ class ConvolutionalNeuralNetwork(DigitClassificationInterface):
 
 class RandomForestModel(DigitClassificationInterface):
     def __init__(self):
-        # Load and initialize your Random Forest model here using sklearn
+        # Load and initialize Random Forest model using sklearn package
         mnist = fetch_openml('mnist_784', version=1)
         X = mnist.data.astype('float32')
         y = mnist.target.astype('int')
@@ -86,7 +86,7 @@ class DigitClassifier:
 if __name__ == "__main__":
     mnist = tf.keras.datasets.mnist
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
-    image_data = x_test[0]  # Replace this with your image data
+    image_data = x_test[0]  
     algorithm = "cnn"  # Change this to "rf" or "rand" for different models
 
     model = DigitClassifier(algorithm)
